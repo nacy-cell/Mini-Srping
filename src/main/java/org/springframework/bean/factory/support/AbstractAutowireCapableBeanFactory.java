@@ -5,6 +5,8 @@ import org.springframework.bean.factory.config.BeanDefinition;
 
 public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory {
 
+    private InstantiationStrategy instantiationStrategy=new SimpleInstantiationStrategy();
+
     @Override
     protected Object createBean(String beanName,BeanDefinition beanDefinition) throws BeansException {
         return doCreat(beanName,beanDefinition);
@@ -15,7 +17,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         Object bean = null;
         Class beanClass = beanDefinition.getBeanClass();
         try {
-            bean=beanClass.newInstance();
+            bean=creatBeanInstance(beanDefinition);
         }catch (Exception e) {
             throw new BeansException("Instantiation of bean failed",e);
         }
@@ -23,6 +25,18 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         addSingleton(beanName,bean);
 
         return bean;
+    }
+
+    private Object creatBeanInstance(BeanDefinition beanDefinition) {
+        return instantiationStrategy.instantiate(beanDefinition);
+    }
+
+    public InstantiationStrategy getInstantiationStrategy() {
+        return instantiationStrategy;
+    }
+
+    public void setInstantiationStrategy(InstantiationStrategy instantiationStrategy) {
+        this.instantiationStrategy = instantiationStrategy;
     }
 
 
