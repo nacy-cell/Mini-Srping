@@ -1,4 +1,4 @@
-package test.org.springframework.bean.factory;
+package test.org.springframework.bean;
 
 public class Car {
 
