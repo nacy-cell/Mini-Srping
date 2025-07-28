@@ -7,3 +7,11 @@
 ## Bean实例化
 
 ![bean2.png](assets/bean2.png)
+
+## 资源和资源加载器
+
+![resource.png](assets/resource.png)
+
+## 在XML中定义Bean
+
+![xml-bean.png](assets/xml-bean.png)
