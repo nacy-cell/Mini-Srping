@@ -10,8 +10,12 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
     private ResourceLoader resourceLoader;
 
     public AbstractBeanDefinitionReader(BeanDefinitionRegistry  registry) {
+        this(registry, new DefaultResourceLoader());
+    }
+
+    public AbstractBeanDefinitionReader(BeanDefinitionRegistry registry, ResourceLoader resourceLoader) {
         this.registry = registry;
-        resourceLoader = new DefaultResourceLoader();
+        this.resourceLoader = resourceLoader;
     }
 
     @Override

@@ -40,11 +40,11 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                 inputStream.close();
             }
         }catch (Exception e){
-            throw new BeansException("Could not load bean definitions from resource",e);
+            throw new BeansException("IOException parsing XML document from " + resource, e);
         }
     }
 
-    private void doLoadBeanDefinitions(InputStream inputStream)throws Exception {
+    private void doLoadBeanDefinitions(InputStream inputStream){
 
         Document document = XmlUtil.readXML(inputStream);
         Element rootElement = document.getDocumentElement();
@@ -73,7 +73,12 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                     String name = beanElement.getAttribute(NAME_ATTRIBUTE);
                     String className = beanElement.getAttribute(CLASS_ATTRIBUTE);
                     // 根据类名反射获取对应的Class对象
-                    Class<?>clazz=Class.forName(className);
+                    Class<?> clazz = null;
+                    try {
+                        clazz = Class.forName(className);
+                    } catch (ClassNotFoundException e) {
+                        throw new BeansException("Cannot find class [" + className + "]");
+                    }
                     //id优先于name
                     String beanName = StrUtil.isNotEmpty(id)?id:name;
                     if(StrUtil.isEmpty(beanName)){
@@ -91,6 +96,10 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                                 String valueAttribute = property.getAttribute(VALUE_ATTRIBUTE);
                                 String refAttribute = property.getAttribute(REF_ATTRIBUTE);
 
+                                if (StrUtil.isEmpty(nameAttribute)) {
+                                    throw new BeansException("The name attribute cannot be null or empty");
+                                }
+
                                 Object value = valueAttribute;
                                 if (StrUtil.isNotEmpty(refAttribute)) {
                                     value = new BeanReference(refAttribute);
@@ -103,6 +112,10 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                         }
                     }
 
+                    if (getRegistry().containsBeanDefinition(beanName)) {
+                        //beanName不能重名
+                        throw new BeansException("Duplicate beanName[" + beanName + "] is not allowed");
+                    }
                     getRegistry().registerBeanDefinition(beanName, beanDefinition);
 
                 }
