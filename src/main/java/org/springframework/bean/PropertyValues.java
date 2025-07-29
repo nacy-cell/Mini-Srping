@@ -8,6 +8,16 @@ public class PropertyValues {
     private final List<PropertyValue> propertyValues=new ArrayList<>();
 
     public void addPropertyValue(PropertyValue propertyValue) {
+
+        for (int i = 0; i < this.propertyValues.size(); i++) {
+            PropertyValue currentPv = this.propertyValues.get(i);
+            if (currentPv.getName().equals(propertyValue.getName())) {
+                //覆盖原有的属性值
+                this.propertyValues.set(i, propertyValue);
+                return;
+            }
+        }
+
         this.propertyValues.add(propertyValue);
     }
 
