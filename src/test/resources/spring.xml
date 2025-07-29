@@ -16,4 +16,10 @@
         <property name="brand" value="porsche"/>
     </bean>
 
+
+    <bean class="test.org.springframework.common.CustomBeanFactoryPostProcessor"/>
+
+    <bean class="test.org.springframework.common.CustomerBeanPostProcessor"/>
+
+
 </beans>

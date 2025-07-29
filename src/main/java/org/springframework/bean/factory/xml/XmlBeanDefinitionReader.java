@@ -30,6 +30,10 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         super(beanDefinitionRegistry);
     }
 
+    public XmlBeanDefinitionReader(BeanDefinitionRegistry registry, ResourceLoader resourceLoader) {
+        super(registry, resourceLoader);
+    }
+
     @Override
     public void loadBeanDefinitions(Resource resource) throws BeansException {
         try {

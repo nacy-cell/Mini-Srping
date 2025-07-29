@@ -32,6 +32,11 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegister i
     }
 
     @Override
+    public <T> T getBean(String name, Class<T> requiredType) throws BeansException {
+        return ((T) getBean(name));
+    }
+
+    @Override
     public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
         beanPostProcessors.remove(beanPostProcessor);
         beanPostProcessors.add(beanPostProcessor);
