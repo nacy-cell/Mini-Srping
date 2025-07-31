@@ -14,4 +14,9 @@
 
 ## 在XML中定义Bean
 
-![xml-bean.png](assets/xml-bean.png)
+![xml-bean.png](assets/xml-bean.png.png)
+
+## 容器扩展机制流程
+
+![context.png](assets/context.png)
+
