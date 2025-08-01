@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.StrUtil;
 import org.springframework.bean.PropertyValue;
+import org.springframework.bean.factory.BeanFactoryAware;
 import org.springframework.bean.factory.BeansException;
 import org.springframework.bean.factory.DisposableBean;
 import org.springframework.bean.factory.InitializingBean;
@@ -101,6 +102,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
     protected Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) {
 
+        if(bean instanceof BeanFactoryAware) {
+            ((BeanFactoryAware) bean).setBeanFactory(this);
+        }
+
         Object wrappedBean = applyBeanPostProcessorsBeforeInitialization(bean, beanName);
 
         try {
@@ -152,9 +157,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
      * @throws Throwable
      */
     protected void invokeInitMethods(String beanName, Object bean, BeanDefinition beanDefinition) throws Throwable {
+
         if (bean instanceof InitializingBean) {
             ((InitializingBean) bean).afterPropertiesSet();
         }
+
         String initMethodName = beanDefinition.getInitMethodName();
         if (StrUtil.isNotEmpty(initMethodName)) {
             Method initMethod = ClassUtil.getPublicMethod(beanDefinition.getBeanClass(), initMethodName);
