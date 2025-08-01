@@ -2,6 +2,7 @@ package org.springframework.bean.factory.support;
 
 import org.springframework.bean.factory.BeansException;
 import org.springframework.bean.factory.ConfigurableListableBeanFactory;
+import org.springframework.bean.factory.DisposableBean;
 import org.springframework.bean.factory.config.BeanDefinition;
 
 import java.util.HashMap;
@@ -14,6 +15,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
     private Map<String, BeanDefinition> beanDefinitionMap = new HashMap<>();
 
+
     @Override
     public void registerBeanDefinition(String beanName, BeanDefinition beanDefinition) {
         beanDefinitionMap.put(beanName, beanDefinition);
@@ -23,6 +25,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
     public BeanDefinition getBeanDefinition(String beanName) throws BeansException {
         return beanDefinitionMap.get(beanName);
     }
+
+
 
     @Override
     public boolean containsBeanDefinition(String beanName) {
