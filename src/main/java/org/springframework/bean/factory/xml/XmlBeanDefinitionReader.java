@@ -27,7 +27,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
     public static final String REF_ATTRIBUTE="ref";
     public static final String INIT_METHOD_ATTRIBUTE = "init-method";
     public static final String DESTROY_METHOD_ATTRIBUTE = "destroy-method";
-
+    public static final String SCOPE_ATTRIBUTE = "scope";
 
 
     public XmlBeanDefinitionReader(BeanDefinitionRegistry beanDefinitionRegistry) {
@@ -82,6 +82,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                     String className = beanElement.getAttribute(CLASS_ATTRIBUTE);
                     String initMethodName = beanElement.getAttribute(INIT_METHOD_ATTRIBUTE);
                     String destroyMethodName = beanElement.getAttribute(DESTROY_METHOD_ATTRIBUTE);
+                    String beanScope = beanElement.getAttribute(SCOPE_ATTRIBUTE);
 
                     // 根据类名反射获取对应的Class对象
                     Class<?> clazz = null;
@@ -97,7 +98,13 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                         beanName=StrUtil.lowerFirst(clazz.getSimpleName());
                     }
 
+
+
                     BeanDefinition beanDefinition = new BeanDefinition(clazz);
+
+                    if (StrUtil.isNotEmpty(beanScope)) {
+                        beanDefinition.setScope(beanScope);
+                    }
 
                     beanDefinition.setInitMethodName(initMethodName);
                     beanDefinition.setDestroyMethodName(destroyMethodName);
@@ -130,6 +137,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                         //beanName不能重名
                         throw new BeansException("Duplicate beanName[" + beanName + "] is not allowed");
                     }
+
                     getRegistry().registerBeanDefinition(beanName, beanDefinition);
 
                 }
