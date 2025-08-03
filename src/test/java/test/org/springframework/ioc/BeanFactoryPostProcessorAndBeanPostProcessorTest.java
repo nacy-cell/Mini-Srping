@@ -1,4 +1,4 @@
-package test.org.springframework;
+package test.org.springframework.ioc;
 
 import org.junit.Test;
 import org.springframework.bean.factory.support.DefaultListableBeanFactory;
